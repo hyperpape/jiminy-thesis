@@ -23,7 +23,9 @@ class TestResult<T> {
 
     T unwrap() {
         if (value == null) {
-            throw new Minithesis.OverrunException(); // TODO: why?
+            // TODO: I *think* it makes sense, because a lack of value would happen because of an overrun, but
+            //  confirm/document
+            throw new Minithesis.OverrunException();
         }
         return value;
     }

@@ -50,7 +50,7 @@ class TestingState<T> {
     private void generate() {
         // TODO: best scoring
         while (shouldKeepGenerating() && validTestCases < maxExamples) {
-            // TODO: print results
+            // TODO: determine what proper value for printResults is
             applyTestFunction(new TestCase(new ArrayList<>(), random, 8 * 1024, false));
         }
     }
@@ -64,7 +64,7 @@ class TestingState<T> {
         if (testResult.isValid()) {
             validTestCases++;
             if (testCase.getTargetingScore() > Integer.MIN_VALUE) {
-                // TODO
+                // TODO: Targeting
             }
         }
         if (testResult.error().equals(Optional.of(TestStatus.INTERESTING))) {
@@ -95,6 +95,7 @@ class TestingState<T> {
             shrinkByDeletion();
             shrinkByZeroing();
             shrinkIndividualValues();
+            // TODO: left out a shrink from minithesis--sorting consecutive values
             shrinkBySwapping();
         }
     }

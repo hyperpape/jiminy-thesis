@@ -68,7 +68,7 @@ public class Minithesis {
                 test.accept(testCase);
                 return TestResult.success(null);
             } catch (InvalidTestCaseException | OverrunException | UnsatisfiableTestCaseException e) {
-                return TestResult.error(TestStatus.INVALID); // TODO: think more about this
+                return TestResult.error(TestStatus.INVALID);
             } catch (Exception | AssertionFailedError e) {
                 return TestResult.error(TestStatus.INTERESTING);
             }
