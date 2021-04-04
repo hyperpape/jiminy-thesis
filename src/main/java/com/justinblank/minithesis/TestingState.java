@@ -107,6 +107,7 @@ class TestingState<T> {
                 // original: [...i-1, i, ...,i+k,...]
                 // deleted version: [...i-1,i+k,...]
                 if (i >= this.result.size()) {
+                    // This is necessary because of the block attempting to decrement attempt[i-1] below.
                     i = this.result.size() - 1;
                     continue;
                 }
@@ -118,10 +119,15 @@ class TestingState<T> {
                 for (var j = i; j + k < this.result.size(); j++) {
                     attempt.add(this.result.get(j + k));
                 }
-                // TODO: there's a case in minithesis I've omitted here
 
-                // TODO: this deserves serious side-eye...where
-                consider(attempt);
+                if (consider(attempt).isEmpty()) {
+                    if (i > 0 && attempt.get(i - 1) > 0) {
+                        attempt.set(i - 1, attempt.get(i - 1) - 1);
+                    }
+                    if (consider(attempt).isPresent()) {
+                        i += 1;
+                    }
+                }
             }
         }
     }
