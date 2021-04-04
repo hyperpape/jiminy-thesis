@@ -7,14 +7,15 @@ import java.util.function.Function;
 class TestingState<T> {
 
     private final Random random;
+
     private final Function<TestCase, TestResult<T>> testFunction;
     private final int maxExamples;
+
     private int validTestCases;
     private int calls;
     private List<Integer> result;
     private Object bestScoring;
     private boolean testIsTrivial;
-    private DirectoryDB db = new DirectoryDB(Path.of("target/minithesis-cache"));
 
     TestingState(Random random, Function<TestCase, TestResult<T>> testFunction, int maxExamples) {
         this.random = random;
@@ -234,9 +235,5 @@ class TestingState<T> {
             }
         }
         return comparison;
-    }
-
-    public DirectoryDB getDB() {
-        return db;
     }
 }

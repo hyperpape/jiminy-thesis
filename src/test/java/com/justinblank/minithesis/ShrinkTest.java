@@ -20,9 +20,9 @@ public class ShrinkTest {
             assertTrue(i > 256 || i < 24);
         };
         Function<TestCase, TestResult<Integer>> testFunction = Minithesis.wrapConsumer(consumer);
-        var ts = new TestingState<Integer>(new Random(), testFunction, 1000);
+        var ts = new TestingState<>(new Random(), testFunction, 1000);
         assertThrows(AssertionFailedError.class, () -> {
-            Minithesis.runTest(consumer, "testShrinkSingleInt", testFunction, ts);
+            Minithesis.runTest(consumer, "testShrinkSingleInt", testFunction, ts, null);
         });
         var result = ts.getResult().get(0);
         // TODO: is this a bug in shrinking? Compare with minithesis
