@@ -14,7 +14,7 @@ class TestingState<T> {
     private List<Integer> result;
     private Object bestScoring;
     private boolean testIsTrivial;
-    private DirectoryDB db = new DirectoryDB(Path.of("./.minithesis-cache"));
+    private DirectoryDB db = new DirectoryDB(Path.of("target/minithesis-cache"));
 
     TestingState(Random random, Function<TestCase, TestResult<T>> testFunction, int maxExamples) {
         this.random = random;
