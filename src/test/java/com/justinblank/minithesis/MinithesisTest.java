@@ -8,7 +8,22 @@ import static org.junit.jupiter.api.Assertions.*;
 public class MinithesisTest {
 
     @Test
-    public void testTrivialTestPasses() {
+    public void testTrivialTestCasePasses() {
+        Minithesis.runTest((tc) -> { }, "trivialTest");
+    }
+
+    @Test
+    public void testExceptionThrowingTestFails() {
+        assertThrows(Exception.class, () -> {
+            Minithesis.runTest((tc) -> {
+                var x = tc.choice(10);
+                throw new RuntimeException();
+            }, "testExceptionThrowingTestFails");
+        });
+    }
+
+    @Test
+    public void testSimpleIntegerTestPasses() {
 	    Minithesis.runTest((tc) -> {
            var x = tc.choice(10);
            var y = tc.choice(10);

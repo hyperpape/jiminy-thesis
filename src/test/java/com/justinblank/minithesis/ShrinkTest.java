@@ -1,8 +1,11 @@
 package com.justinblank.minithesis;
 
 import org.junit.jupiter.api.Test;
+import org.opentest4j.AssertionFailedError;
 
 import java.util.Random;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 import static com.justinblank.minithesis.Possibility.lists;
 import static com.justinblank.minithesis.Possibility.range;
@@ -12,11 +15,15 @@ public class ShrinkTest {
 
     @Test
     public void testShrinkSingleInt() {
-        var ts = new TestingState<Integer>(new Random(), Minithesis.wrapConsumer(tc -> {
+        Consumer<TestCase> consumer = (TestCase tc) -> {
             var i = tc.choice(1000);
             assertTrue(i > 256 || i < 24);
-        }), 1000);
-        ts.run();
+        };
+        Function<TestCase, TestResult<Integer>> testFunction = Minithesis.wrapConsumer(consumer);
+        var ts = new TestingState<Integer>(new Random(), testFunction, 1000);
+        assertThrows(AssertionFailedError.class, () -> {
+            Minithesis.runTest(consumer, "testShrinkSingleInt", testFunction, ts);
+        });
         var result = ts.getResult().get(0);
         // TODO: is this a bug in shrinking? Compare with minithesis
         assertTrue(result == 24 || result == 25);

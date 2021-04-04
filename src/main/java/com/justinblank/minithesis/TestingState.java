@@ -22,6 +22,11 @@ class TestingState<T> {
         this.maxExamples = maxExamples;
     }
 
+    /**
+     * Apply test function, and wrap into a result
+     * @param testCase
+     * @return
+     */
     TestResult<T> testFunction(TestCase testCase) {
         try {
             return testFunction.apply(testCase);
@@ -49,7 +54,7 @@ class TestingState<T> {
         }
     }
 
-    private void applyTestFunction(TestCase testCase) {
+    void applyTestFunction(TestCase testCase) {
 	    var testResult = testFunction.apply(testCase);
         calls++;
         if (testCase.getChoices().size() == 0 && (testResult.isValid())) {
@@ -163,18 +168,13 @@ class TestingState<T> {
     }
 
     private Optional<List<Integer>> consider(List<Integer> attempt) {
-        try {
-            var testCase = TestCase.forChoices(attempt, false);
-            var newResult = this.testFunction.apply(testCase);
-            if (newResult.error().equals(Optional.of(TestStatus.INTERESTING))) {
-                this.result = attempt;
-                return Optional.of(attempt);
-            }
-            return Optional.empty();
+        var testCase = TestCase.forChoices(attempt, false);
+        var newResult = this.testFunction.apply(testCase);
+        if (newResult.error().equals(Optional.of(TestStatus.INTERESTING))) {
+            this.result = attempt;
+            return Optional.of(attempt);
         }
-        catch (Minithesis.UnsatisfiableTestCaseException | Minithesis.OverrunException e) {
-            return Optional.empty();
-        }
+        return Optional.empty();
     }
 
     /**
