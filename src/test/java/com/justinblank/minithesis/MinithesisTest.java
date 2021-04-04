@@ -10,8 +10,8 @@ public class MinithesisTest {
     @Test
     public void testTrivialTestPasses() {
 	    Minithesis.runTest((tc) -> {
-           var x = tc.choice(10).unwrap();
-           var y = tc.choice(10).unwrap();
+           var x = tc.choice(10);
+           var y = tc.choice(10);
            assertTrue(Math.min(x, y) <= x);
         }, "testTrivialTestPasses");
     }
@@ -19,17 +19,17 @@ public class MinithesisTest {
     @Test
     public void testMin() {
 	    Minithesis.runTest((tc) -> {
-           var x = tc.choice(10).unwrap();
-           var y = tc.choice(10).unwrap();
-           assertTrue(Math.min(x, y) <= x && Math.min(x, y) <= y);
+           var x = tc.choice(10);
+           var y = tc.choice(10);
+           assertTrue(Math.min(x, y) <= x);
         }, "testMin");
     }
     
     @Test
     public void testBadMaxTestFails() {
 	    assertThrows(AssertionFailedError.class, () -> Minithesis.runTest((tc) -> {
-           var x = tc.choice(10).unwrap();
-           var y = tc.choice(10).unwrap();
+           var x = tc.choice(10);
+           var y = tc.choice(10);
            assertTrue(Math.max(x, y) <= x && Math.max(x, y) <= y);
         }, "testBadMaxTestFails"));
     }
@@ -37,8 +37,8 @@ public class MinithesisTest {
     @Test
     public void testAny() {
         assertThrows(AssertionFailedError.class, () -> Minithesis.runTest((tc) -> {
-            var x = tc.choice(10).unwrap();
-            var y = tc.choice(10).unwrap();
+            var x = tc.choice(10);
+            var y = tc.choice(10);
             assertTrue(Math.max(x, y) <= x && Math.max(x, y) <= y);
         }, "testAny"));
     }
@@ -46,7 +46,7 @@ public class MinithesisTest {
     @Test
     public void testSatisfiableAssumptions() {
         Minithesis.runTest((tc) -> {
-            var x = tc.choice(10).unwrap();
+            var x = tc.choice(10);
             tc.assume(x % 2 == 0);
             assertEquals(0, x % 2);
         }, "testSatisfiableAssumptions");
@@ -55,7 +55,7 @@ public class MinithesisTest {
     @Test
     public void testUnsatisfiableAssumptions() {
         assertThrows(AssertionFailedError.class, () -> Minithesis.runTest((tc) -> {
-            var x = tc.choice(10).unwrap();
+            var x = tc.choice(10);
             tc.assume(x % 2 == 1);
             assertEquals(0, x % 2);
         }, "testUnSatisfiableAssumptions"));

@@ -14,7 +14,7 @@ public class Possibility<T> {
 
     public static <T> Possibility<T> of(T...args) {
         Function<TestCase, T> f = (tc) -> {
-            var i = tc.choice(args.length);
+            var i = tc._makeChoice(args.length);
             return args[i.unwrap()];
         };
         return new Possibility<T>(f);
@@ -29,7 +29,7 @@ public class Possibility<T> {
     }
 
     public static Possibility<Integer> range(int m, int n) {
-        return new Possibility<>((tc) -> m + tc.choice(n - m).unwrap());
+        return new Possibility<>((tc) -> m + tc._makeChoice(n - m).unwrap());
     }
 
     public static <S> Possibility<List<S>> lists(Possibility<S> elements, int min_size, int max_size) {
@@ -66,7 +66,7 @@ public class Possibility<T> {
             return nothing();
         }
         else {
-            return new Possibility<T>((tc) -> args[tc.choice(args.length).unwrap()]);
+            return new Possibility<T>((tc) -> args[tc._makeChoice(args.length).unwrap()]);
         }
     }
 }

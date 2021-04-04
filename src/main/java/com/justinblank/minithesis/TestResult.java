@@ -23,7 +23,7 @@ class TestResult<T> {
 
     T unwrap() {
         if (value == null) {
-            throw new Minithesis.OverrunException();
+            throw new Minithesis.OverrunException(); // TODO: why?
         }
         return value;
     }

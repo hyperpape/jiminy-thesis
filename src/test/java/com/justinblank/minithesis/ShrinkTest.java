@@ -13,7 +13,7 @@ public class ShrinkTest {
     @Test
     public void testShrinkSingleInt() {
         var ts = new TestingState<Integer>(new Random(), Minithesis.wrapConsumer(tc -> {
-            var i = tc.choice(1000).unwrap();
+            var i = tc.choice(1000);
             assertTrue(i > 256 || i < 24);
         }), 1000);
         ts.run();

@@ -114,12 +114,7 @@ class TestingState<T> {
                 // TODO: there's a case in minithesis I've omitted here
 
                 // TODO: this deserves serious side-eye...where
-                try {
-                    consider(attempt);
-                }
-                catch (Minithesis.OverrunException e) {
-                    // this is fine, our shrink was invalid
-                }
+                consider(attempt);
             }
         }
     }
@@ -168,13 +163,18 @@ class TestingState<T> {
     }
 
     private Optional<List<Integer>> consider(List<Integer> attempt) {
-        var testCase = TestCase.forChoices(attempt, false);
-        var newResult = this.testFunction.apply(testCase);
-        if (newResult.error().equals(Optional.of(TestStatus.INTERESTING))) {
-            this.result = attempt;
-            return Optional.of(attempt);
+        try {
+            var testCase = TestCase.forChoices(attempt, false);
+            var newResult = this.testFunction.apply(testCase);
+            if (newResult.error().equals(Optional.of(TestStatus.INTERESTING))) {
+                this.result = attempt;
+                return Optional.of(attempt);
+            }
+            return Optional.empty();
         }
-        return Optional.empty();
+        catch (Minithesis.UnsatisfiableTestCaseException | Minithesis.OverrunException e) {
+            return Optional.empty();
+        }
     }
 
     /**

@@ -23,15 +23,18 @@ public class TestCase {
     }
 
     static TestCase forChoices(List<Integer> choices, boolean printResults) {
-        return new TestCase(choices, null, choices.size(), printResults);
+        return new TestCase(choices, new Random(), choices.size(), printResults);
     }
 
-    public TestResult<Integer> choice(int n) {
+    public Integer choice(int n) {
         var result = _makeChoice(n, () -> this.random.nextInt(n));
         if (shouldPrint()) {
             System.out.printf("choice(%d): %d%n", n, result);
         }
-        return result;
+        if (result.error().isPresent()) {
+            throw new Minithesis.UnsatisfiableTestCaseException(); // TODO?
+        }
+        return result.unwrap();
     }
 
     TestResult<Integer> forcedChoice(int n) {
@@ -71,6 +74,10 @@ public class TestCase {
         finally {
             this.depth--;
         }
+    }
+
+    TestResult<Integer> _makeChoice(int n) {
+        return _makeChoice(n, () -> this.random.nextInt(n));
     }
 
     TestResult<Integer> _makeChoice(int n, Supplier<Integer> randomFunc) {
