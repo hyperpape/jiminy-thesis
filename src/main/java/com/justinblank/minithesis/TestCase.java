@@ -48,7 +48,15 @@ public class TestCase {
         return TestResult.success(n);
     }
 
-    TestResult<Boolean> weighted(double p) {
+    public boolean booleanChoice() {
+        return weighted(.5);
+    }
+
+    public boolean weighted(double p) {
+        return _weighted(p).unwrap();
+    }
+
+    TestResult<Boolean> _weighted(double p) {
         TestResult<Integer> result;
         if (p <= 0) {
              result = forcedChoice(0);

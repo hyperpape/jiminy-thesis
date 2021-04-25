@@ -44,7 +44,7 @@ public class Possibility<T> {
                     var r = tc.forcedChoice(0);
                     break;
                 }
-                else if (!tc.weighted(.9).value().orElse(false)) {
+                else if (!tc._weighted(.9).value().orElse(false)) {
                     break;
                 }
                 result.add(tc.any(elements));
