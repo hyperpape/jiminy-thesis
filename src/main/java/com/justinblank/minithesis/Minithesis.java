@@ -4,13 +4,25 @@ import org.opentest4j.AssertionFailedError;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class Minithesis {
 
+    public static final String USE_COVERAGE = "UseMinithesisCoverage";
+
+    static {
+        var coverageEnabled = System.getenv(USE_COVERAGE);
+        if (null != coverageEnabled) {
+            System.setProperty(USE_COVERAGE, coverageEnabled);
+        }
+    }
+    
     public static <T> void runTest(Consumer<TestCase> test, String name) {
+        runTest(test, name, 100);
+    }
+
+    public static <T> void runTest(Consumer<TestCase> test, String name, int examples) {
         Function<TestCase, TestResult<T>> testFunction = wrapConsumer(test);
         DirectoryDB db = null;
         try {
@@ -19,9 +31,16 @@ public class Minithesis {
         catch (Exception e) {
             e.printStackTrace();
         }
-        var state = new TestingState<>(new Random(), testFunction, 100);
+        boolean useCoverage = useCoverage();
+        var randomGen = useCoverage ? new CoverageRandom() : new RandomGen();
+        var state = new TestingState<>(randomGen, testFunction, examples);
 
         runTest(test, name, testFunction, state, db);
+    }
+
+
+    private static boolean useCoverage() {
+        return Boolean.parseBoolean(System.getProperty(USE_COVERAGE));
     }
 
     static <T> void runTest(Consumer<TestCase> test, String name, Function<TestCase, TestResult<T>> testFn, TestingState<T> state, DirectoryDB db) {

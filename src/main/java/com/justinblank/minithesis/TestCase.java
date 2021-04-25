@@ -8,14 +8,14 @@ import java.util.function.Supplier;
 public class TestCase {
 
     private final List<Integer> prefix;
-    private final Random random;
+    private final RandomGen random;
     private final int maxSize;
     private final boolean printResults;
     private int depth = 0;
     private int targetingScore = Integer.MIN_VALUE;
     private final List<Integer> choices = new ArrayList<>();
 
-    TestCase(List<Integer> prefix, Random random, int maxSize, boolean printResults) {
+    TestCase(List<Integer> prefix, RandomGen random, int maxSize, boolean printResults) {
         this.prefix = prefix;
         this.random = random;
         this.maxSize = maxSize;
@@ -23,7 +23,7 @@ public class TestCase {
     }
 
     static TestCase forChoices(List<Integer> choices, boolean printResults) {
-        return new TestCase(choices, new Random(), choices.size(), printResults);
+        return new TestCase(choices, new RandomGen(), choices.size(), printResults);
     }
 
     public Integer choice(int n) {

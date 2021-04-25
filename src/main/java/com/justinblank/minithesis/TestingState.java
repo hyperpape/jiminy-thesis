@@ -1,12 +1,11 @@
 package com.justinblank.minithesis;
 
-import java.nio.file.Path;
 import java.util.*;
 import java.util.function.Function;
 
 class TestingState<T> {
 
-    private final Random random;
+    private final RandomGen random;
 
     private final Function<TestCase, TestResult<T>> testFunction;
     private final int maxExamples;
@@ -17,7 +16,7 @@ class TestingState<T> {
     private Object bestScoring;
     private boolean testIsTrivial;
 
-    TestingState(Random random, Function<TestCase, TestResult<T>> testFunction, int maxExamples) {
+    TestingState(RandomGen random, Function<TestCase, TestResult<T>> testFunction, int maxExamples) {
         this.random = random;
         this.testFunction = testFunction;
         this.maxExamples = maxExamples;
@@ -51,7 +50,9 @@ class TestingState<T> {
         // TODO: best scoring
         while (shouldKeepGenerating() && validTestCases < maxExamples) {
             // TODO: determine what proper value for printResults is
-            applyTestFunction(new TestCase(new ArrayList<>(), random, 8 * 1024, false));
+            var tc = new TestCase(new ArrayList<>(), random, 8 * 1024, false);
+            applyTestFunction(tc);
+            random.postTest(tc.getChoices());
         }
     }
 

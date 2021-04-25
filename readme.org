@@ -15,7 +15,8 @@ in order of most to least important:
 6. A caching layer for mapping choice sequences to outcomes
 #+END_QUOTE
 
-jiminy-thesis currently supports 1-4. 
+jiminy-thesis currently supports 1-4. I've additionally added coverage
+based test-case generation.
 
 ** Implementation
 

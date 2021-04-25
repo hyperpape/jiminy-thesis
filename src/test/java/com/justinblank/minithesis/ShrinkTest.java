@@ -21,7 +21,7 @@ public class ShrinkTest {
             assertTrue(i > 256 || i < 24);
         };
         Function<TestCase, TestResult<Integer>> testFunction = Minithesis.wrapConsumer(consumer);
-        var ts = new TestingState<>(new Random(), testFunction, 1000);
+        var ts = new TestingState<>(new RandomGen(), testFunction, 1000);
         assertThrows(AssertionFailedError.class, () -> {
             Minithesis.runTest(consumer, "testShrinkSingleInt", testFunction, ts, null);
         });
@@ -32,7 +32,7 @@ public class ShrinkTest {
 
     @Test
     public void testFindsSmallList() {
-        var ts = new TestingState<Integer>(new Random(), Minithesis.wrapConsumer((tc) -> {
+        var ts = new TestingState<Integer>(new RandomGen(), Minithesis.wrapConsumer((tc) -> {
         var list = tc.any(lists(range(0, 10000), 1, 100));
         assertTrue(list.stream().mapToInt(i -> i).sum() <= 1000);
         }), 1000);
@@ -44,7 +44,7 @@ public class ShrinkTest {
 
     @Test
     public void testFindsSmallUniqueValuesForList() {
-        var ts = new TestingState<Integer>(new Random(), Minithesis.wrapConsumer((tc) -> {
+        var ts = new TestingState<Integer>(new RandomGen(), Minithesis.wrapConsumer((tc) -> {
             var list = tc.any(lists(range(0, 10000), 1, 100));
             tc.assume(list.size() >= 4);
             assertEquals(list.size(), new HashSet<>(list).size());
