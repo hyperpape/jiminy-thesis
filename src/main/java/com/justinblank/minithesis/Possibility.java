@@ -61,12 +61,17 @@ public class Possibility<T> {
         });
     }
 
-    public static <T> Possibility<T> mix(T... args) {
+    @SafeVarargs
+    public static <T> Possibility<T> mix(Possibility<T>... args) {
         if (args.length == 0) {
             return nothing();
         }
         else {
-            return new Possibility<T>((tc) -> args[tc._makeChoice(args.length).unwrap()]);
+            // TODO: This has a weird result that the first possibility will always be preferred during shrinking
+            return new Possibility<T>((tc) -> {
+                var choice = tc._makeChoice(args.length).unwrap();
+                return tc.any(args[choice]);
+            });
         }
     }
 }

@@ -41,7 +41,7 @@ public class PossibilityTest {
     @Test
     public void testMixPossibilityChoosesFirstOption() {
         assertThrows(AssertionFailedError.class, () -> Minithesis.runTest((tc) -> {
-            var mix = Possibility.mix(1, 2);
+            var mix = Possibility.mix(Possibility.just(1), Possibility.just(2));
             var i = tc.any(mix);
             assertEquals(1, i);
         }, "testMixPossibilityChoosesFirstOption"));
@@ -50,7 +50,7 @@ public class PossibilityTest {
     @Test
     public void testMixPossibilityChoosesSecondOption() {
         assertThrows(AssertionFailedError.class, () -> Minithesis.runTest((tc) -> {
-            var mix = Possibility.mix(1, 2);
+            var mix = Possibility.mix(Possibility.just(1), Possibility.just(2));
             var i = tc.any(mix);
             assertEquals(2, i);
         }, "testMixPossibilityChoosesSecondOption"));
