@@ -47,7 +47,7 @@ class CoverageRandom extends RandomGen {
         // Try to gather a pool of seeds before we begin mutating
         if (testCount > 12) {
             var seed = pending.poll();
-            if (seed != null) {
+            if (seed != null && !seed.isEmpty()) {
                 indexToMutate = super.nextInt(seed.size());
                 candidate = seed;
                 pending.add(seed);
@@ -108,9 +108,13 @@ class CoverageRandom extends RandomGen {
         return i;
     }
 
-    static class MinMaxChoices {
-        private List<Integer> min;
-        private List<Integer> max;
+    public Collection<MinMaxChoices> seen() {
+        return coverageSeen.values();
+    }
+
+    public static class MinMaxChoices {
+        public List<Integer> min;
+        public List<Integer> max;
 
         public MinMaxChoices(List<Integer> min, List<Integer> max) {
             this.min = min;
