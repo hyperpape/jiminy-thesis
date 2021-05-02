@@ -1,6 +1,7 @@
 package com.justinblank.minithesis;
 
 import org.junit.jupiter.api.Test;
+import org.junit.platform.commons.util.StringUtils;
 import org.opentest4j.AssertionFailedError;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -82,5 +83,36 @@ public class PossibilityTest {
             var i = tc.any(range);
             assertEquals(10, i);
         }, "testRangesChooseNonMaxValues"));
+    }
+
+    @Test
+    public void testStringsAreNonEmpty() {
+        assertThrows(AssertionFailedError.class, () -> Minithesis.runTest((tc) -> {
+            var strings = Possibility.strings(0, 10, true);
+            var s = tc.any(strings);
+            assertTrue(s.isEmpty());
+        }, "testStringsFindsNonEmptyString"));
+    }
+
+    @Test
+    public void testAsciiStringsAreAscii() {
+        Minithesis.runTest((tc) -> {
+            var strings = Possibility.strings(0, 10, true);
+            var s = tc.any(strings);
+            for (var i = 0; i < s.length(); i++) {
+                assertTrue(s.charAt(i) < 128);
+            }
+        }, "testAsciiStringsAreAscii");
+    }
+
+    @Test
+    public void testNonAsciiStringsIncludeNonAsciiStrings() {
+        assertThrows(AssertionFailedError.class, () -> Minithesis.runTest((tc) -> {
+            var strings = Possibility.strings(0, 10, false);
+            var s = tc.any(strings);
+            for (var i = 0; i < s.length(); i++) {
+                assertTrue(s.charAt(i) < 128);
+            }
+        }, "testAsciiStringsAreAscii"));
     }
 }

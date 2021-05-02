@@ -2,7 +2,6 @@ package com.justinblank.minithesis;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.function.Supplier;
 
 public class TestCase {
@@ -73,7 +72,7 @@ public class TestCase {
     public <T> T any(Possibility<T> possibility) {
         try {
             this.depth++;
-            var result = possibility.produce(this);
+            var result = possibility.apply(this);
             if (this.shouldPrint()) {
                 System.out.println("any(" + possibility + "): " + result);
             }
