@@ -1,7 +1,7 @@
 * Jiminy-Thesis
 
-A Java port of [[https://github.com/DRMacIver/minithesis][minithesis]], a minimal property based testing library
-for educational purposes.
+Roughly speaking, a Java port of [[https://github.com/DRMacIver/minithesis][minithesis]], a minimal property based
+testing library for educational purposes.
 
 #+BEGIN_QUOTE
 minithesis supports roughly the following features, more or less
