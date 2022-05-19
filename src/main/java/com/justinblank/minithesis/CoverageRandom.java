@@ -29,6 +29,7 @@ class CoverageRandom extends RandomGen {
         BranchCoverage.clearBranches();
         if (coverageSeen.containsKey(coverageRecord)) {
             var current = coverageSeen.get(coverageRecord);
+            // update the record for this trace with smallest/largest values that follow it
             if (compare(current.min, tcChoices) == 1) {
                 pending.remove(current.min);
                 current.min = tcChoices;
@@ -55,6 +56,13 @@ class CoverageRandom extends RandomGen {
         }
     }
 
+    /**
+     * Compare two lists of integers lexicographically: [1,2,3] sorts before [1,2,4], [2,5,7] before [3,1,1].
+     * If one list is a prefix of the other, then the shorter list sorts first
+     * @param left a list
+     * @param right a list
+     * @return a comparison (-1, 0, or 1)
+     */
     private int compare(List<Integer> left, List<Integer> right) {
         var lInt = left.iterator();
         var rInt = right.iterator();
