@@ -48,7 +48,7 @@ class TestingState<T> {
 
     private void generate() {
         // TODO: best scoring
-        while (shouldKeepGenerating() && validTestCases < maxExamples) {
+        while (shouldKeepGenerating()) {
             // TODO: determine what proper value for printResults is
             var tc = new TestCase(new ArrayList<>(), random, 8 * 1024, false);
             applyTestFunction(tc);
