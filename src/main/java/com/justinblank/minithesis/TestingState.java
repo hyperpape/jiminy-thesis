@@ -135,6 +135,7 @@ class TestingState<T> {
 
     private void shrinkByZeroing() {
         var k = 8;
+        // Doing binary search (the next shrinking step) will handle the case of zeroing a single value
         while (k > 1) {
             var i = this.result.size() - k;
             while (i >= 0) {
